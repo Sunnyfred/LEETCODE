@@ -76,7 +76,7 @@ For the main function:
 Sort the input array nums.
 Call kSum with start = 0, k = 4, and target, and return the result.
 
-For kSum function:
+For ksum function:
 
 Check if the sum of k smallest values is greater than target, or the sum of k largest values is smaller than target. 
 Since the array is sorted, the smallest value is nums[start], and largest - the last element in nums.
@@ -90,7 +90,7 @@ Include the current value nums[i] into set.
 Add set to the result res.
 Return the result res.
 
-For twoSum function:
+For twosum function:
 
 Set the low pointer lo to start, and high pointer hi to the last index.
 While low pointer is smaller than high:
