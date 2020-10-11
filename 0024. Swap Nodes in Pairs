@@ -61,13 +61,17 @@ class Solution:
         carry = head0
         
         while head and head.next:
-            fn = head
+        
+            fn = head         # define pair
             sn = fn.next
             
-            carry.next = sn
-            fn.next = sn.next
-            sn.next = fn
+            carry.next = sn   # used to record the correct order for head0.next
             carry = fn
-            head = fn.next
+            
+            fn.next = sn.next # swap order
+            sn.next = fn
+            
+            head = fn.next # move on to next pair
+            
         return head0.next
 
