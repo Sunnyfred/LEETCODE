@@ -1,0 +1,46 @@
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+ 
+
+Example 1:
+
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+Example 2:
+
+Input: n = 1
+Output: ["()"]
+ 
+
+Constraints:
+
+1 <= n <= 8
+
+
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        ans = []
+        def backtrack(S, left, right):
+            if len(S) == 2 * n:
+                ans.append(S)
+                return 
+            if left < n:
+                backtrack(S+'(', left+1, right)
+            if right < left:
+                backtrack(S+')', left, right+1)
+
+        backtrack('', 0, 0)
+        return ans
+        
+        
+        
+Comment:
+
+l=0, r=0, ''  -> l=1, r=0, '(' -> l=2, r=0, '((' -> l=3, r=0, '(((' -> l=3, r=1, '((()' -> l=3, r=2, '((())' -> l=3, r=3, '((()))' -> ans.append('((()))')
+                               -> l=2, r=1, '(()' -> l=3, r=1, '(()(' -> l=3, r=2, '(()()' -> l=3, r=3, '(()())' -> ans.append('(()())')
+                               -> l=2, r=2, '(())' -> l=3, r=2, '(())(' -> l=3, r=3, '(())()' -> ans.append('(())()')
+              -> l=1, r=1, '()' -> l=2, r=1, '()(' -> l=3, r=1, '()((' -> l=3, r=2, '()(()' -> l=3, r=3, '()(())' -> ans.append('()(())')
+                                -> l=2, r=2, '()()' -> l=3, r=2, '()()(' -> l=3, r=3, '()()()' -> ans.append('()()()')
+             
+                               
