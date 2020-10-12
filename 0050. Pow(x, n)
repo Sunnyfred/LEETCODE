@@ -23,7 +23,7 @@ Constraints:
 -231 <= n <= 231-1
 -104 <= xn <= 104
 
-
+Recursion:
 class Solution:
     def myPow(self, x: float, n: int) -> float:
         if n==0:
@@ -36,3 +36,30 @@ class Solution:
                 return x*tmp*tmp
             else:
                 return tmp*tmp/x
+                
+10   <- 5     <-   2  <-  1  <- 0                
+2^10 <- 2^4*2 <- 2*2 <- 2  <- 1
+                
+                
+or
+Iteration
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        if n<0:
+            x=1/x
+            n=-n
+        tmp = x
+        ans = 1
+        while n>0:
+            
+            
+            if(n%2==1):
+                ans = ans*tmp
+            tmp *= tmp
+           
+            n=int(n/2)
+        return ans
+        
+n=10    ->   n=5          ->         n=2                  ->     n=1
+tmp=2*2 ->   tmp=2*2*2*2  ->         tmp=2*2*2*2*2*2*2*2  ->     tmp=2^16
+ans=1   ->   ans=2*2      ->         ans=2*2              ->     ans=2*2*2^8
