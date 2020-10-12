@@ -61,5 +61,5 @@ class Solution:
         return ans
         
 n=10    ->   n=5          ->         n=2                  ->     n=1
-tmp=2*2 ->   tmp=2*2*2*2  ->         tmp=2*2*2*2*2*2*2*2  ->     tmp=2^16
 ans=1   ->   ans=2*2      ->         ans=2*2              ->     ans=2*2*2^8
+tmp=2*2 ->   tmp=2*2*2*2  ->         tmp=2*2*2*2*2*2*2*2  ->     tmp=2^16
