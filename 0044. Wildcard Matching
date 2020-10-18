@@ -1,0 +1,99 @@
+Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*' where:
+
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
+The matching should cover the entire input string (not partial).
+
+ 
+
+Example 1:
+
+Input: s = "aa", p = "a"
+Output: false
+Explanation: "a" does not match the entire string "aa".
+Example 2:
+
+Input: s = "aa", p = "*"
+Output: true
+Explanation: '*' matches any sequence.
+Example 3:
+
+Input: s = "cb", p = "?a"
+Output: false
+Explanation: '?' matches 'c', but the second letter is 'a', which does not match 'b'.
+Example 4:
+
+Input: s = "adceb", p = "*a*b"
+Output: true
+Explanation: The first '*' matches the empty sequence, while the second '*' matches the substring "dce".
+Example 5:
+
+Input: s = "acdcb", p = "a*c?b"
+Output: false
+ 
+
+Constraints:
+
+0 <= s.length, p.length <= 2000
+s contains only lowercase English letters.
+p contains only lowercase English letters, '?' or '*'.
+
+
+
+
+class Solution:
+    def remove_dulplicated_star(self, p):
+        if p=='':
+            return p
+        p1 = [p[0],]
+        for x in p[1:]:
+            if p1[-1]!='*' or (p1[-1]=='*' and x!='*'):
+                p1.append(x)
+        return ''.join(p1)
+    
+    def determin(self, s, p):
+        hp = self.hp
+        if(s, p) in hp:
+            return hp[(s, p)]
+        if p==s or p =='*':
+            hp[(s, p)] = True
+        elif p=='' or s=='':
+            hp[(s, p)] = False
+        elif p[0]==s[0] or p[0]=="?":
+            hp[(s, p)] = self.determin(s[1:], p[1:])
+        elif p[0] =='*':
+            hp[(s, p)] = self.determin(s, p[1:]) or self.determin(s[1:], p)
+        else:
+            hp[(s, p)] = False
+        return hp[(s, p)]
+    
+    def isMatch(self, s: str, p: str) -> bool:
+        p = self.remove_dulplicated_star(p)
+        self.hp={}
+        return self.determin(s, p)
+        
+        
+        
+Here is the algorithm.
+
+Clean up the input by replacing more than one star in a row by a single star: p = remove_duplicate_stars(p).
+
+Initiate the memoization hashmap dp.
+
+Return the helper function with a cleaned input: helper(s, p).
+
+helper(s, p):
+
+If (s, p) is already known and stored in dp, return the value.
+
+If the strings are equal p == s, or the pattern matches whatever string p == '*', add dp[(s, p)] = True.
+
+Else if p is empty, or s is empty, add dp[(s, p)] = False.
+
+Else if the current characters match p[0] == s[0] or p[0] == '?', then compare the next ones and add dp[(s, p)] = helper(s[1:], p[1:]).
+
+Else if the current pattern character is a star p[0] == '*', then there are two possible situations: the star matches no characters, and the star matches one or more characters. dp[(s, p)] = helper(s, p[1:]) or helper(s, p[1:]).
+
+Else p[0] != s[0], add dp[(s, p)] = False.
+
+Now that the value is computed, return it dp[(s, p)].
