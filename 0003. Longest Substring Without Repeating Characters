@@ -71,7 +71,7 @@ public:
     }
     
     bool repeateornot(string& s, int start, int end){
-        vector<int> table(128);                            // direct access table
+        vector<int> table(128);                            
         for (int i = start; i <= end; i++){
             char c = s[i];
             table[c]++;
@@ -120,14 +120,14 @@ public:
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        vector<int> table(128, -1);   
+        vector<int> table(128, -1);                           // -1 is the senital value to represent null
         int left=0, right=0;
         int ans=0;
         
         while(right<s.length()){
             char r = s[right];
             int index = table[r];
-            if(index!=-1 && index>=left && index<right) {
+            if(index!=-1 && index>=left && index<right) {   // direct access table
                 left = index+1;
             }
             ans = max(ans, right-left+1);
