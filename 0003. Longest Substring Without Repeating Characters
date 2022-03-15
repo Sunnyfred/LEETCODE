@@ -44,3 +44,42 @@ class Solution:
             location[s[j]]=j
             l = max(j-i, l)
         return l
+
+
+
+
+
+
+C++
+
+1. Brute force
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int len = s.length();
+        int ans = 0;
+        
+        for (int i =0; i< len; i++){
+            for (int j =i; j< len; j++) {
+                if(repeateornot(s, i, j)){
+                    ans = max(ans, j-i+1);
+                }
+            }
+        }
+        return ans;
+    }
+    
+    bool repeateornot(string& s, int start, int end){
+        vector<int> table(128);                            // direct access table
+        for (int i = start; i <= end; i++){
+            char c = s[i];
+            table[c]++;
+            if(chars[c]>1){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
