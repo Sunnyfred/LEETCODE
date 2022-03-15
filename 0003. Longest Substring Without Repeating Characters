@@ -83,3 +83,57 @@ public:
     }
 };
 
+
+
+
+2. Two pointers  
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> table(128);
+        int left = 0;
+        int right = 0;
+        int ans=0;
+        
+        while (right<s.length()) {                  // right pointer for extending sliding window
+            char r = s[right];
+            table[r]++;
+            while (table[r]>1){                     // left pointer for contracting sliding window
+                char l = s[left];
+                table[l]--;
+                left++;
+            }
+            ans = max(ans, right-left+1);
+            right++;
+        }
+        
+        return ans;
+    }
+    
+
+};
+
+
+3. Direct access table
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> table(128, -1);   
+        int left=0, right=0;
+        int ans=0;
+        
+        while(right<s.length()){
+            char r = s[right];
+            int index = table[r];
+            if(index!=-1 && index>=left && index<right) {
+                left = index+1;
+            }
+            ans = max(ans, right-left+1);
+            table[r] = right;
+            right++;            
+        }
+        return ans;
+    }
+};
