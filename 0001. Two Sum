@@ -59,5 +59,74 @@ class Solution:
                 
                 
                 
+C++ 
+
+1. Brute force
+
+vector<int> twoSum(vector<int>& nums, int target) {
+    int len = nums.size();
+    for(int i = 0; i < len; i++) {
+        for(int j = i + 1; j < len; j++) {
+            if(nums[j] == target - nums[i])
+                return { i, j };
+        }
+    }
+    return {-1, -1};
+};
+
+Time complexity : O(n^2). For each element, we try to find its complement by looping through the rest of array which takes O(n) time. Therefore, the time complexity is O(n^2).
+Space complexity : O(1).
+      
+      
+      
+      
+2. Two pointer
+
+vector<int> twoSum(vector<int>& nums, int target) {
+    int front = 0, rear = nums.size() - 1;
+    sort(nums.begin(), nums.end());
+    while(front < rear) {
+      int sum = nums[front] + nums[rear];
+      if (sum == target)
+       break;
+      else if (sum > target)
+       rear--;
+      else
+       front++;
+    }
+    return {front, rear};
+};
+
+Time complexity : O(nlog(n)). sort function takes nlog(n) time.
+Space complexity : O(1).
+
+
+
+
+3. Hash Table
                 
-        
+                
+class Solution {
+public:
+    vector<int> nums;
+    int target;
+
+    vector<int> twoSum(vector<int>& nums, int target) {
+        map<int, int> map;
+        vector<int> pairs;
+        for(int i = 0; i < nums.size(); i++) {
+            int complement = target - nums[i];
+            if(map.find(complement) != map.end()) {                         //stopping criteria, check if complement is in hastable
+                pairs.push_back(map.find(complement)->second);
+                pairs.push_back(i);
+                break;
+            }
+            map.insert(pair<int, int>(nums[i], i));
+        }
+        return pairs;
+
+    }
+};                
+                
+Time complexity : O(n). We traverse the list containing n elements only once. Each look up in the table costs only O(1) time.
+Space complexity : O(n). The extra space required depends on the number of items stored in the hash table, which stores at most n elements.        
