@@ -53,3 +53,126 @@ class Solution:
                 r += 1
                 
         return res
+
+
+
+
+
+
+
+
+
+C++ 
+
+
+1. brute force
+
+class Solution {
+public:
+    bool check_substring(string & s, int i, int j){
+        while(i<=j){
+            if(s[i]!=s[j]){
+                return false;
+            }
+            i++, j--;
+        }
+        return true;
+    }
+    string longestPalindrome(string s) {
+        int n=s.length();
+        int max_len = 0;
+        int starting_index = 0;
+        for (int i=0; i<n; i++){
+            for (int j=i; j<n; j++) {
+                if(check_substring(s, i, j)){
+                    if(j-i+1 > max_len){
+                        max_len = j-i+1;
+                        starting_index = i;
+                    }
+                }
+            }
+        }
+        return s.substr(starting_index, max_len);
+    }
+};
+
+
+
+Time Complexity
+The time complexity of the above code is O(n^3) because we are traversing over all the substrings and
+then checking each substring if it is a palindrome or not. There are n^2 substrings and 
+checking a substring takes O(n) time, so total time complexity is O(n^3).
+
+Space Complexity
+The space complexity of the above code is O(1) because we are not using any extra space.
+
+
+
+
+
+2. 
+
+The idea is again the same. For every substring, we will check if it is a palindrome or not, 
+and if it is then we will take the longest among them. The only change is that now we will store if a substring is a palindrome or not in the “dp” array. 
+
+Now to check if a substring with starting index as “i” and ending index as “j” is a palindrome or not, we just have to check two conditions,
+
+If the ith and jth characters of the string are equal, and 
+If substring with starting index as i+1 and ending index as j-1, is a palindrome.
+If both the above conditions are true, then it means this substring is also a palindrome. 
+
+
+
+dp[i][j] = whether the substring from index i to j is a palindrome or not
+
+We will completely remove the isPalindrome(), instead we write simple logic to fill the table. 
+The same nested loop will be here, but the logic is changed the logic can be explained as:
+
+Case 1:
+
+i==j
+Every single character of a string is a palindrome. Therefore dp[i][j] is true.
+
+Case 2:
+
+j-i=1
+We're checking two characters at a time, if s[i]==s[j], then dp[i][j] is true.
+
+Case 3:
+
+j-i>=2
+Consider "aba" s[0]=s[2], therefore dp[i][j] will be true. If s[i]==s[j], but j-i>=2, dp[i][j] = dp[i+1][j-1]. 
+Now the i+1,j-1 coordinates are literally eliminating the first and last character, since they are already the same, 
+we want to know if the string without them is still a palindrome or no? This result will in turn be any of the 
+above cases or this case, nevertheless, the result has already been calculated.
+
+
+
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int n=s.length();
+        int max_len = 0;
+        int starting_index = 0;
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        for (int i=n-1; i>=0; i--){
+            for (int j=i; j<=n-1; j++) {
+                if(i==j){
+                    dp[i][j] = 1;
+                }
+                else if (s[i]==s[j]) {
+                    if(j-i==1) dp[i][j] = 1;
+                    else dp[i][j] = dp[i+1][j-1];
+                }
+                if(dp[i][j]==1){
+                    if(j-i+1 > max_len){
+                        max_len = j-i+1;
+                        starting_index = i;
+                    }
+                }
+            }
+        }
+        return s.substr(starting_index, max_len);
+    }
+};
