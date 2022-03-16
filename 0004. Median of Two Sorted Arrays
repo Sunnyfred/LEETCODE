@@ -51,3 +51,64 @@ class Solution:
             return total[int(len(total)/2)]
         else:
             return total[int(len(total)/2)]/2+total[int(len(total)/2)-1]/2
+            
+            
+            
+            
+            
+            
+C++
+
+
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        for(int i=0; i<nums2.size(); i++){
+            nums1.push_back(nums2[i]);
+        }
+        sort(nums1.begin(), nums1.end());
+        double median;
+        int len = nums1.size();
+        if(len%2==0){
+            median=(double)(nums1[len/2-1]+nums1[len/2])/2.0;
+        }
+        else{
+            median=nums1[len/2];
+        }
+        return median;
+    }
+};
+
+
+
+
+
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> tmp;
+        int i=0, j=0;
+        while(i<nums1.size() && j<nums2.size()){
+            if(nums1[i]<=nums2[j]){
+                tmp.push_back(nums1[i]);
+                i++;
+            }
+            else{
+                tmp.push_back(nums2[j]);
+                j++;
+            }
+        }
+        while(i<nums1.size()) tmp.push_back(nums1[i++]);
+        while(j<nums2.size()) tmp.push_back(nums2[j++]);
+        
+        double ans;
+        if(tmp.size()%2==0){
+            double d = (tmp[(0 + tmp.size()-1)/2] + tmp[((0 + tmp.size()-1)/2)+1]);
+            ans = d/2;
+        }
+        else{
+            ans = tmp[(0 + tmp.size()-1)/2];
+        }
+        return ans;
+    }
+};
