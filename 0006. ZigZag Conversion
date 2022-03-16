@@ -67,3 +67,52 @@ class Solution:
             else:
                 index -= 1
         return ''.join(zigzag)
+
+
+
+
+
+
+c++
+
+
+Approach 1: Sort by Row
+Intuition
+
+By iterating through the string from left to right, we can easily determine which row in the Zig-Zag pattern that a character belongs to.
+
+Algorithm
+
+We can use \text{min}( \text{numRows}, \text{len}(s))min(numRows,len(s)) lists to represent the non-empty rows of the Zig-Zag Pattern.
+
+Iterate through ss from left to right, appending each character to the appropriate row. The appropriate row can be tracked using two variables: the current row and the current direction.
+
+The current direction changes only when we moved up to the topmost row or moved down to the bottommost row.
+
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows==1) return s;
+        bool goingdown = false;
+        int row_n = 0;
+        vector<string> row(min(numRows, int(s.size())));
+        for (int i =0; i<s.size(); i++){
+            row[row_n]+=s[i];
+            if(row_n==0 || row_n==numRows-1) goingdown = !goingdown;
+            row_n += goingdown?1:-1;
+        }
+        string ans;
+        for(string r : row) ans+=r;
+        return ans;
+    }
+};
+
+
+Complexity Analysis
+
+Time Complexity: O(n)O(n), where n == \text{len}(s)n==len(s)
+Space Complexity: O(n)O(n)
+
+
+
