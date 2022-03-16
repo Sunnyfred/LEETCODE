@@ -43,3 +43,57 @@ class Solution:
                 p1 += 1
 
         return result
+
+
+
+
+C++
+
+1. brute force
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int area = 0;
+        for (int i=0; i< height.size(); i++){
+            for (int j=i+1; j< height.size(); j++){
+                area = max(area, min(height[i], height[j])*(j-i));
+            }
+        }
+        return area;
+    }
+};
+
+Complexity Analysis: 
+
+Time Complexity: O(n^2). 
+As nested traversal of the array is required, so time complexity is O(n^2)
+Space Complexity: O(1). 
+As no extra space is required, so space complexity is constant.
+
+
+
+
+2. 2 pointers
+
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int area = 0;
+        int l = 0;
+        int r = height.size()-1;
+        while(l<r){
+            area = max(area, min(height[l],height[r])*(r-l));
+            if(height[l]<height[r]){
+                l++;
+            }
+            else{
+                r--;
+            }
+        }
+        return area;
+    }
+};
+
+
