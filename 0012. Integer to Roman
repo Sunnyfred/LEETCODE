@@ -77,3 +77,37 @@ class Solution:
         tens = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
         ones = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
         return thousands[num // 1000] + hundreds[num % 1000 // 100] + tens[num % 100 // 10] + ones[num % 10]
+
+
+
+
+
+
+
+
+
+
+
+
+C++
+
+class Solution {
+public:
+    string intToRoman(int num) {
+        int nums[] = {1,4,5,9,10,40,50,90,100,400,500,900,1000};
+        string sym[] = {"I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M"};
+        int index = 12;
+        string ans;
+        while(num>0){
+            //cout<<index<<' '<<num<<' '<<nums[index]<<endl;
+            if(num>=nums[index]){
+                ans += sym[index];
+                num -= nums[index];
+            }
+            else{
+                index--;
+            }
+        }
+        return ans;
+    }
+};
