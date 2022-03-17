@@ -60,6 +60,54 @@ class Solution:
 #If we have a match on the remaining strings after any of these operations, then the initial inputs matched.            
             
             
-or
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+C++
+
+1. Recursion
+
+
+
+check fisrt char
+    fistmatch = same || p[0]=='.', if match, use first char in p, or not use first char in p
+
+if use first char in p and p[1]=='*'
+     fisrtmatch && ismatch(s.substr(1), p)
+if not use first char in p  and p[1]=='*', discard first 2 chars in p, because '*' means zero time of preceding element 
+     ismatch(s.substr, p.substr(2))
+ if use fisrt char in p but p[i]!='*', this is regular case, just check one by one
+     fisrtmatch && ismatch(s.substr(1), p.substr(1))
+     
+
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        if(p.size()==0) return s.size()==0;
+        bool firstmatch = (s.size()>0) && ((p[0]=='.') || (p[0]==s[0]));
+        if(p.size()>=2 && p[1]=='*'){
+            return (firstmatch && isMatch(s.substr(1), p)) || (isMatch(s, p.substr(2)));
+        }
+        else{
+            return firstmatch && isMatch(s.substr(1), p.substr(1));     // if p.szie()=1, then p.substr(1).size()==0, do the recursive step, it return false
+        }
+    }
+};
+
+
+
+
+
+
+2. DP
+
+
 
 
