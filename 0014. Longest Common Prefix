@@ -64,3 +64,39 @@ public:
         return strs[0].substr(0,ans);
     }
 };
+
+
+
+
+
+2. binary tree
+
+
+class Solution {
+public:
+    bool iscommen(vector<string>& strs, int len){
+        string str1 = strs[0].substr(0,len);
+        for(int i=1; i< strs.size(); i++){
+            if(strs[i].rfind(str1, 0) != 0) return false;
+        }
+        return true;
+    }
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.size() == 0) return "";
+        int min_width = INT_MAX;
+        for(string str : strs) min_width = min(min_width, (int)str.size());
+        int l = 1;
+        int r = min_width;
+        while(l<=r){
+            int mid = (l+r)/2;
+            if(iscommen(strs,mid)){
+                l = mid+1;
+            }
+            else{
+                r = mid -1;
+            }
+            
+        }
+        return strs[0].substr(0, r);
+    }
+};
