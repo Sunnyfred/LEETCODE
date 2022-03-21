@@ -48,3 +48,81 @@ class Solution:
             second = second.next
         second.next = second.next.next
         return head
+
+
+
+
+
+
+
+
+
+
+
+
+C++
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        int length;
+        ListNode* currentnode = head;
+        while(currentnode!=nullptr){
+            currentnode = currentnode->next;
+            length++;
+        }
+        if(length==n){
+            return head->next;
+        }
+        int nodebeforeindex = length - n -1;
+        currentnode = head;
+        for (int i=0; i<nodebeforeindex; i++){
+            currentnode = currentnode->next;
+        }
+        currentnode->next = currentnode->next->next;
+        return head;
+    }
+};
+
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* currentnode = head;
+        for(int i=0; i< n; i++){
+            currentnode = currentnode->next;
+        }
+        if(currentnode==nullptr){
+            return head->next;
+        }
+        ListNode* nodebeforeindex = head;
+        while(currentnode->next!=nullptr){
+            currentnode = currentnode->next;
+            nodebeforeindex = nodebeforeindex-> next;
+        }
+        nodebeforeindex->next = nodebeforeindex->next->next;
+        return head;
+    }
+};
