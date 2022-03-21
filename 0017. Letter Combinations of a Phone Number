@@ -51,3 +51,37 @@ class Solution:
         if digits:
             track(strings, digits)
         return res
+        
+        
+        
+        
+C++
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        if(digits.empty()){
+            return vector<string>();
+        }
+        vector<int> int_dig;
+        for (char c : digits){
+            int_dig.push_back(c-'0');
+        }
+        vector<string> ans;
+        generate(ans, int_dig, "", 0);
+        return ans;
+    }
+    
+    void generate(vector<string>& ans, vector<int> & int_dig, string curr, int index){
+        const string lookup[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tvu", "wxyz"};
+        
+        if(index>=int_dig.size()){ //stopping criteria
+            ans.push_back(curr);
+            return;
+        }
+        string tmp = lookup[int_dig[index]];
+        for(char c : tmp){
+            generate(ans, int_dig, curr+c, index+1);
+        }
+    }
+};
