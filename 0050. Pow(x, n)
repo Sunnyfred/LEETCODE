@@ -63,3 +63,60 @@ class Solution:
 n=10    ->   n=5          ->         n=2                  ->     n=1
 ans=1   ->   ans=2*2      ->         ans=2*2              ->     ans=2*2*2^8
 tmp=2*2 ->   tmp=2*2*2*2  ->         tmp=2*2*2*2*2*2*2*2  ->     tmp=2^16
+
+
+
+
+
+
+
+C++
+
+
+1. BRUTE FORCE
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        int N = n;
+        if(N<0){
+            x=1/x;
+            N=-N;
+        }
+        double ans=1;
+        for (int i=0; i< N; i++){
+            ans*= x;
+        }
+        return ans;
+    }
+};
+
+
+
+
+2. fast pow
+
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        long long N = n;
+        if(N<0){
+            x=1/x;
+            N=-N;
+        }
+        return fastpow(x, N);
+    }
+    
+    double fastpow(double x, long long  n){
+        if(n==0){
+            return 1.0;
+        }
+        double half = fastpow(x, n/2);
+        if(n%2==0){
+            return half*half;
+        }else{
+            return half*half*x;
+        }
+    }
+};
