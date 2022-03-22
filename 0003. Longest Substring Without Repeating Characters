@@ -75,7 +75,7 @@ public:
         for (int i = start; i <= end; i++){
             char c = s[i];
             table[c]++;
-            if(chars[c]>1){
+            if(table[c]>1){
                 return false;
             }
         }
