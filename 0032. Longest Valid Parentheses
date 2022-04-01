@@ -58,7 +58,7 @@ public:
 
 
 dp
-
+dp represents the length of the longest valid substring ending at iith index
 
 class Solution {
 public:
