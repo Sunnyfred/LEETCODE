@@ -36,8 +36,8 @@ public:
         for(int i = 0; i < nums.size()-1; i++){
             farthest = max(farthest, i+nums[i]);
             if(i==currentjumpend){
-                jumps++;
-                currentjumpend = farthest;
+                jumps++;                     // count N.O. of jumps
+                currentjumpend = farthest;  // the range of jumps that we can jump to
             }
         }
         return jumps;
