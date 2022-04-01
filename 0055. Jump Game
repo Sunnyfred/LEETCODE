@@ -1,0 +1,82 @@
+You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+
+Return true if you can reach the last index, or false otherwise.
+
+ 
+
+Example 1:
+
+Input: nums = [2,3,1,1,4]
+Output: true
+Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+Example 2:
+
+Input: nums = [3,2,1,0,4]
+Output: false
+Explanation: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
+ 
+
+Constraints:
+
+1 <= nums.length <= 104
+0 <= nums[i] <= 105
+
+
+
+
+
+
+
+c++
+
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int lastpos = nums.size() - 1;
+        for(int i = nums.size() -1; i>=0; i--){
+            if(i+nums[i]>=lastpos){
+                lastpos = i;
+            }
+        }
+        return lastpos == 0;
+    }
+};
+
+
+
+
+dp 
+
+
+Initially, all elements of the memo table are UNKNOWN, except for the last one, which is (trivially) GOOD (it can reach itself)
+Modify the backtracking algorithm such that the recursive step first checks if the index is known (GOOD / BAD)
+If it is known then return True / False
+Otherwise perform the backtracking steps as before
+Once we determine the value of the current index, we store it in the memo table
+
+
+
+class Solution {
+public:
+    bool canjumpposition(int position, vector<int>& nums, vector<int>& memo){
+        if(memo[position] != -1){                         // stoping criterion
+            return memo[position]==1?true:false;
+        }
+        
+        int furthestjump = min(static_cast<int>(position+nums[position]), static_cast<int>(nums.size()-1));
+        for(int next = position+1; next<=furthestjump; next++){
+            if(canjumpposition(next, nums, memo)){
+                memo[position] = 1;
+                return true;
+            }
+        }
+        memo[position] = 0;
+        return false;
+    }
+    
+    bool canJump(vector<int>& nums) {
+        vector<int> memo(nums.size(), -1);  // -1 represent unknow, 0 bad, 1 for good
+        memo[nums.size()-1] = 1;            // no need to jump for last index, return true
+        return canjumpposition(0, nums, memo);    
+    }
+};
