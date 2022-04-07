@@ -29,6 +29,27 @@ Constraints:
 
 C++
 
+
+class Solution {
+public:
+	int func(int index, int n, vector<int>& nums, vector<int>& tmp){
+		if(index==n-1) return 0;
+		if(tmp[index]!=-1) return tmp[index];
+		int min_step - INT_MAX;
+		for(int i=index+1; i<=index+nums[index]&&i<n; i++){
+			min_step=min(min_step, 1+func(i,n,nums,tmp));
+		}
+		return tmp[index]=min_step;
+	}
+    int jump(vector<int>& nums) {
+		vector<int> tmp(n+1, -1);
+		int ans = func(0,n,nums,tmp);
+		return ans;
+    }
+};
+
+
+
 class Solution {
 public:
     int jump(vector<int>& nums) {
