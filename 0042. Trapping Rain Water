@@ -22,3 +22,62 @@ class Solution:
         return unit
         
         
+
+
+
+C++
+
+
+1. BRUTE FORCE
+
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int ans = 0;
+        
+        for(int i = 0; i < height.size(); i++){
+            int maxLeft = 0, maxRight = 0;
+            for(int j = i; j >= 0 ; j--){
+                maxLeft = max(maxLeft, height[j]);
+            }
+            for(int j = i; j < height.size() ; j++){
+                maxRight = max(maxRight, height[j]);
+            }
+            ans += min(maxLeft, maxRight) - height[i];
+            cout << ans << endl;
+        }
+        
+        return ans;        
+    }
+};
+
+
+
+2. DP
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if(height.empty()) return 0;
+        int ans=0;
+        int n = height.size();
+        vector<int> l_max(n), r_max(n);
+        
+        l_max[0] = height[0];
+        for(int i=1; i<n; i++){
+            l_max[i] = max(height[i], l_max[i-1]);
+        }
+        
+        
+        r_max[n-1] = height[n-1];
+        for(int i=n-2; i>=0; i--){
+            r_max[i] = max(height[i], r_max[i+1]);
+        }
+        
+        
+        for(int i=1; i<n-1; i++){
+            ans += min(l_max[i], r_max[i]) - height[i];
+        }
+        return ans;
+    }
+};
