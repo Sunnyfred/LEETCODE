@@ -45,6 +45,26 @@ public:
 
 
 
+class Solution {
+public:
+	bool canjumppos(int index, vector<int>& nums){
+		if(index==nums.size()) return true;
+		int farthest = min(index+nums[i],nums.size()-1);
+		for(int i=index+1; i<farthest; i++){
+			if(canjumppos(i,nums)){
+				return true;
+			}
+		}
+		return false;
+	}
+    bool canJump(vector<int>& nums) {
+		return canjumppos(0,nums);
+    }
+};
+
+
+
+
 dp 
 
 
