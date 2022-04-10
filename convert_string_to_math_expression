@@ -1,178 +1,195 @@
-#include <iostream>#include <string>
-#include <vector>
-#include <sstream>
-
-
+#include <cstring>
+#include <iostream>
 using namespace std;
-
-
-class MathOperators
-{
-    public:
-
-
-    enum enumMathOperators
+ 
+// Length of expressions in characters
+const int LEN = 80;
+ 
+// Size of the stack
+const int MAX = 40;
+ 
+class Stack {
+private:
+    // Stack: array of characters
+    char st[MAX];
+ 
+    // Number at top of the stack
+    int top;
+ 
+public:
+    Stack()
     {
-        ParenthesesOpen='(',
-        ParenthesesClose=')',
-        Add='+',
-        Minus='-',
-        Multiplication ='*',
-        Space=' ',
-        Division ='/'
-    };
-
-
-    static bool IsMathOperator(char enMath)
+        top = 0;
+    }
+ 
+    // Function to put a character in stack
+    void push(char var)
     {
-        switch(enMath)
-        {
-            case ParenthesesOpen:
-            case ParenthesesClose:
-            case Add:
-            case Minus:
-            case Multiplication:
-            case Space:
-            case Division:
-                return true;
-            default:
-                return false;
-        }
+        st[++top] = var;
+    }
+ 
+    // Function to return a character off stack
+    char pop()
+    {
+        return st[top--];
+    }
+ 
+    // Function to get the top of the stack
+    int gettop()
+    {
+        return top;
     }
 };
-
-void CalculateExpression(string strMathExpression){
-    //clean empty spaces
-    for(unsigned int i=0; i<strMathExpression.size(); i++)
+ 
+// Expression class
+class Express {
+private:
+    // Stack for analysis
+    Stack s;
+ 
+    // Pointer to input string
+    char* pStr;
+ 
+    // Length of the input string
+    int len;
+ 
+public:
+    Express(char* ptr)
     {
-        if(strMathExpression[i]== ' ' || strMathExpression[i]== '\t')
-        {
-            strMathExpression.erase(i,1);
-            i=0;
-        }
+        pStr = ptr;
+        len = strlen(pStr);
     }
-
-
-    //spare the operator and numbers
-    //for add them on a vector:
-    string strNumber="";
-    vector<string> vecOperator;
-    int OperatorCount=0;
-    
-    //we must add a null string terminator
-    //for we convert the char to string
-    //or we can get unexpected results:
-    char chr[]={'0','\0'};
-    for(unsigned int i=0; i<=strMathExpression.size() ; i++)
-    {
-        chr[0]=strMathExpression[i];
-        if(isdigit(chr[0]))
-        {
-            strNumber+=chr[0];
-        }
-        else
-        {
-            if(isdigit(strNumber[0]))
-                vecOperator.push_back(strNumber);
-            if( MathOperators::IsMathOperator(chr[0])==true)
-            {
-                vecOperator.push_back(chr);
-                OperatorCount++;
+ 
+    // Parse the input string
+    void parse();
+ 
+    // Evaluate the stack
+    int solve();
+};
+ 
+void Express::parse()
+{
+ 
+    // Character from the input string
+    char ch;
+ 
+    // Last value
+    char lastval;
+ 
+    // Last operator
+    char lastop;
+ 
+    // For each input character
+    for (int j = 0; j < len; j++) {
+        ch = pStr[j];
+ 
+        // If it's a digit then save
+        // the numerical value
+        if (ch >= '0' && ch <= '9')
+            s.push(ch - '0');
+ 
+        // If it's an operator
+        else if (ch == '+' || ch == '-'
+                 || ch == '*' || ch == '/') {
+ 
+            // If it is the first operator
+            // then put it in the stack
+            if (s.gettop() == 1)
+ 
+                s.push(ch);
+ 
+            // Not the first operator
+            else {
+                lastval = s.pop();
+                lastop = s.pop();
+ 
+                // If it is either '*' or '/' and the
+                // last operator was either '+' or '-'
+                if ((ch == '*' || ch == '/')
+                    && (lastop == '+' || lastop == '-')) {
+ 
+                    // Restore the last two pops
+                    s.push(lastop);
+                    s.push(lastval);
+                }
+ 
+                // In all the other cases
+                else {
+ 
+                    // Perform the last operation
+                    switch (lastop) {
+ 
+                    // Push the result in the stack
+                    case '+':
+                        s.push(s.pop() + lastval);
+                        break;
+                    case '-':
+                        s.push(s.pop() - lastval);
+                        break;
+                    case '*':
+                        s.push(s.pop() * lastval);
+                        break;
+                    case '/':
+                        s.push(s.pop() / lastval);
+                        break;
+                    default:
+                        cout << "\nUnknown oper";
+                        exit(1);
+                    }
+                }
+                s.push(ch);
             }
-            OperatorCount++;
-            strNumber="";
-
-
         }
-    }
-
-
-    //print actual vector:
-    for (unsigned int a=0; a<vecOperator.size();a++)
-    {
-        cout << vecOperator[a] << " ";
-    }
-    cout << "\n";
-
-
-    //making the math:
-    for(unsigned int i=0;i<vecOperator.size(); i++)
-    {
-        if(vecOperator[i]=="+")
-        {
-            //get result in int:
-            int result=stoi(vecOperator[i-1])+ stoi(vecOperator[i+1]);
-
-
-            //get the result in int to string:
-            vecOperator[i-1]= to_string(result);
-
-
-            //erase the next 2 elements:
-            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
-
-
-            //print the elements after changes:
-            for (unsigned int a=0; a<vecOperator.size();a++)
-            {
-                cout << vecOperator[a] << " ";
-            }
-            cout << "\n";
-            
-            //before continue the i must be -1
-            //when the for restart, the i will be 0:
-            i=-1;
-            continue;
-        }
-
-
-        else if(vecOperator[i]=="-")
-        {
-            int result=stoi(vecOperator[i-1])- stoi(vecOperator[i+1]);
-            vecOperator[i-1]= to_string(result);
-            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
-            for (unsigned int a=0; a<vecOperator.size();a++)
-            {
-                cout << vecOperator[a] << " ";
-            }
-            cout << "\n";
-            i=-1;
-            continue;
-        }
-        else if(vecOperator[i]=="/")
-        {
-            int result=stoi(vecOperator[i-1])/ stoi(vecOperator[i+1]);
-            vecOperator[i-1]= to_string(result);
-            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
-            for (unsigned int a=0; a<vecOperator.size();a++)
-            {
-                cout << vecOperator[a] << " ";
-            }
-            cout << "\n";
-            i=-1;
-            continue;
-        }
-        else if(vecOperator[i]=="*")
-        {
-            int result=stoi(vecOperator[i-1])* stoi(vecOperator[i+1]);
-            vecOperator[i-1]= to_string(result);
-            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
-            for (unsigned int a=0; a<vecOperator.size();a++)
-            {
-                cout << vecOperator[a] << " ";
-            }
-            cout << "\n";
-            i=-1;
-            continue;
+        else {
+            cout << "\nUnknown input character";
+            exit(1);
         }
     }
 }
-
-
+ 
+int Express::solve()
+{
+    // Remove the items from stack
+    char lastval;
+    while (s.gettop() > 1) {
+        lastval = s.pop();
+        switch (s.pop()) {
+ 
+        // Perform operation, push answer
+        case '+':
+            s.push(s.pop() + lastval);
+            break;
+        case '-':
+            s.push(s.pop() - lastval);
+            break;
+        case '*':
+            s.push(s.pop() * lastval);
+            break;
+        case '/':
+            s.push(s.pop() / lastval);
+            break;
+        default:
+            cout << "\nUnknown operator";
+            exit(1);
+        }
+    }
+    return int(s.pop());
+}
+ 
+// Driver code
 int main()
 {
-    string strExpression;
-    getline(cin, strExpression);
-    CalculateExpression(strExpression);
+ 
+    char string[LEN] = "2+3*4/3-2";
+ 
+    // Make expression
+    Express* eptr = new Express(string);
+ 
+    // Parse it
+    eptr->parse();
+ 
+    // Solve the expression
+    cout << eptr->solve();
+ 
     return 0;
 }
