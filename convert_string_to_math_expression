@@ -1,0 +1,178 @@
+#include <iostream>#include <string>
+#include <vector>
+#include <sstream>
+
+
+using namespace std;
+
+
+class MathOperators
+{
+    public:
+
+
+    enum enumMathOperators
+    {
+        ParenthesesOpen='(',
+        ParenthesesClose=')',
+        Add='+',
+        Minus='-',
+        Multiplication ='*',
+        Space=' ',
+        Division ='/'
+    };
+
+
+    static bool IsMathOperator(char enMath)
+    {
+        switch(enMath)
+        {
+            case ParenthesesOpen:
+            case ParenthesesClose:
+            case Add:
+            case Minus:
+            case Multiplication:
+            case Space:
+            case Division:
+                return true;
+            default:
+                return false;
+        }
+    }
+};
+
+void CalculateExpression(string strMathExpression){
+    //clean empty spaces
+    for(unsigned int i=0; i<strMathExpression.size(); i++)
+    {
+        if(strMathExpression[i]== ' ' || strMathExpression[i]== '\t')
+        {
+            strMathExpression.erase(i,1);
+            i=0;
+        }
+    }
+
+
+    //spare the operator and numbers
+    //for add them on a vector:
+    string strNumber="";
+    vector<string> vecOperator;
+    int OperatorCount=0;
+    
+    //we must add a null string terminator
+    //for we convert the char to string
+    //or we can get unexpected results:
+    char chr[]={'0','\0'};
+    for(unsigned int i=0; i<=strMathExpression.size() ; i++)
+    {
+        chr[0]=strMathExpression[i];
+        if(isdigit(chr[0]))
+        {
+            strNumber+=chr[0];
+        }
+        else
+        {
+            if(isdigit(strNumber[0]))
+                vecOperator.push_back(strNumber);
+            if( MathOperators::IsMathOperator(chr[0])==true)
+            {
+                vecOperator.push_back(chr);
+                OperatorCount++;
+            }
+            OperatorCount++;
+            strNumber="";
+
+
+        }
+    }
+
+
+    //print actual vector:
+    for (unsigned int a=0; a<vecOperator.size();a++)
+    {
+        cout << vecOperator[a] << " ";
+    }
+    cout << "\n";
+
+
+    //making the math:
+    for(unsigned int i=0;i<vecOperator.size(); i++)
+    {
+        if(vecOperator[i]=="+")
+        {
+            //get result in int:
+            int result=stoi(vecOperator[i-1])+ stoi(vecOperator[i+1]);
+
+
+            //get the result in int to string:
+            vecOperator[i-1]= to_string(result);
+
+
+            //erase the next 2 elements:
+            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
+
+
+            //print the elements after changes:
+            for (unsigned int a=0; a<vecOperator.size();a++)
+            {
+                cout << vecOperator[a] << " ";
+            }
+            cout << "\n";
+            
+            //before continue the i must be -1
+            //when the for restart, the i will be 0:
+            i=-1;
+            continue;
+        }
+
+
+        else if(vecOperator[i]=="-")
+        {
+            int result=stoi(vecOperator[i-1])- stoi(vecOperator[i+1]);
+            vecOperator[i-1]= to_string(result);
+            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
+            for (unsigned int a=0; a<vecOperator.size();a++)
+            {
+                cout << vecOperator[a] << " ";
+            }
+            cout << "\n";
+            i=-1;
+            continue;
+        }
+        else if(vecOperator[i]=="/")
+        {
+            int result=stoi(vecOperator[i-1])/ stoi(vecOperator[i+1]);
+            vecOperator[i-1]= to_string(result);
+            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
+            for (unsigned int a=0; a<vecOperator.size();a++)
+            {
+                cout << vecOperator[a] << " ";
+            }
+            cout << "\n";
+            i=-1;
+            continue;
+        }
+        else if(vecOperator[i]=="*")
+        {
+            int result=stoi(vecOperator[i-1])* stoi(vecOperator[i+1]);
+            vecOperator[i-1]= to_string(result);
+            vecOperator.erase(vecOperator.begin()+i,vecOperator.begin()+i+2);
+            for (unsigned int a=0; a<vecOperator.size();a++)
+            {
+                cout << vecOperator[a] << " ";
+            }
+            cout << "\n";
+            i=-1;
+            continue;
+        }
+    }
+}
+
+
+int main()
+{
+    string strExpression;
+    getline(cin, strExpression);
+    CalculateExpression(strExpression);
+    return 0;
+}
