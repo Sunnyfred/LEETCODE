@@ -43,4 +43,37 @@ l=0, r=0, ''  -> l=1, r=0, '(' -> l=2, r=0, '((' -> l=3, r=0, '(((' -> l=3, r=1,
               -> l=1, r=1, '()' -> l=2, r=1, '()(' -> l=3, r=1, '()((' -> l=3, r=2, '()(()' -> l=3, r=3, '()(())' -> ans.append('()(())')
                                 -> l=2, r=2, '()()' -> l=3, r=2, '()()(' -> l=3, r=3, '()()()' -> ans.append('()()()')
              
-                               
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  C++
+  
+  class Solution {
+public:
+    void gp(int n, int open, int close, string s, vector<string>& ans){
+        if(open==n && close==n){
+            ans.push_back(s);
+            return;
+        }
+        if(open<n){
+            gp(n, open+1, close, s+'(', ans);
+        }
+        if(close<open){
+            gp(n, open, close+1, s+')', ans);
+        }
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        gp(n, 0, 0, "", ans);
+        return ans;
+    }
+};
